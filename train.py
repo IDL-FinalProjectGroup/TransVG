@@ -221,9 +221,14 @@ def main(args):
             args.start_epoch = checkpoint['epoch'] + 1
     elif args.detr_model is not None:
         checkpoint = torch.load(args.detr_model, map_location='cpu')
-        missing_keys, unexpected_keys = model_without_ddp.visumodel.load_state_dict(checkpoint['model'], strict=False)
-        print('Missing keys when loading detr model:')
-        print(missing_keys)
+        filtered_checkpoint = {}
+        for key in checkpoint['model']:
+            if "backbone" not in key:
+                filtered_checkpoint[key] = checkpoint['model'][key]
+        # missing_keys, unexpected_keys = model_without_ddp.visumodel.load_state_dict(checkpoint['model'], strict=False)
+        missing_keys, unexpected_keys = model_without_ddp.visumodel.load_state_dict(filtered_checkpoint, strict=False)
+        # print('Missing keys when loading detr model:')
+        # print(missing_keys)
 
     output_dir = Path(args.output_dir)
     if args.output_dir and utils.is_main_process():
