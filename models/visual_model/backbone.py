@@ -88,9 +88,11 @@ class Backbone(BackboneBase):
 
         backbone = getattr(torchvision.models, name)(
             replace_stride_with_dilation=[False, False, dilation],
-            pretrained=False, norm_layer=FrozenBatchNorm2d)
+            pretrained=False,
+            norm_layer=FrozenBatchNorm2d)
+        # )
             # pretrained=is_main_process(), norm_layer=FrozenBatchNorm2d)
-        assert name in ('resnet50', 'resnet101')
+        assert name in ('resnet50', 'resnet101', 'efficientnet_b7', 'wide_resnet50_2')
         num_channels = 2048
         super().__init__(name, backbone, num_channels, return_interm_layers)
 
