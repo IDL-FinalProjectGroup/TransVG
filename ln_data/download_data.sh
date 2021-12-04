@@ -119,7 +119,7 @@ mkdir referit
 cd referit
 
 printf "Downloading ReferIt dataset (This may take a while...)"
-aria2c -x 8 $REFERIT_DATA_URL
+wget $REFERIT_DATA_URL
 
 
 printf "Uncompressing data..."
@@ -130,7 +130,7 @@ mkdir splits
 cd splits
 
 printf "Downloading ReferIt Splits..."
-aria2c -x 8 $REFERIT_SPLITS_URL
+wget $REFERIT_SPLITS_URL
 
 tar -xjvf $SPLIT_FILE
 rm $SPLIT_FILE
@@ -141,16 +141,16 @@ mkdir -p other/images/mscoco/images
 cd other/images/mscoco/images
 
 printf "Downloading MS COCO 2014 train images (This may take a while...)"
-aria2c -x 8 $COCO_DATA_URL
+wget $COCO_DATA_URL
 
 unzip $COCO_FILE
 rm $COCO_FILE
 
 cd ../../..
 printf "Downloading refcoco, refcocog and refcoco+ splits..."
-aria2c -x 8 $REFCOCO_URL
-aria2c -x 8 $REFCOCO_PLUS_URL
-aria2c -x 8 $REFCOCOG_URL
+wget $REFCOCO_URL
+wget $REFCOCO_PLUS_URL
+wget $REFCOCOG_URL
 
 unzip "*.zip"
 rm *.zip
