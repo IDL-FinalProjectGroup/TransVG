@@ -162,7 +162,7 @@ class TransVGDataset(data.Dataset):
         self.testmode = testmode
         self.split = split
 #         self.tokenizer = BertTokenizer.from_pretrained(bert_model, do_lower_case=True)
-        self.tokenizer = BertTokenizer.from_pretrained("/root/paddlejob/workspace/code/TransVG/pretrained/bert_pretrained/", do_lower_case=True)
+        self.tokenizer = BertTokenizer.from_pretrained("/root/paddlejob/workspace/code/TransVG/pretrained/bert_pretrained/bert-base-uncased-vocab.txt", do_lower_case=True)
         self.return_idx=return_idx
 
         assert self.transform is not None
