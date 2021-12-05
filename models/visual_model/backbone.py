@@ -88,7 +88,7 @@ class Backbone(BackboneBase):
 
         backbone = getattr(torchvision.models, name)(
             replace_stride_with_dilation=[False, False, dilation],
-            pretrained=False,
+            pretrained=True,
             norm_layer=FrozenBatchNorm2d)
         # )
             # pretrained=is_main_process(), norm_layer=FrozenBatchNorm2d)
