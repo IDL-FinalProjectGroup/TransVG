@@ -4,6 +4,8 @@ import json
 import random
 import time
 import math
+# wandb
+import wandb
 
 import numpy as np
 from pathlib import Path
@@ -136,6 +138,11 @@ def main(args):
     np.random.seed(seed)
     random.seed(seed)
     
+    # wandb
+    if utils.get_rank() == 0:
+        wandb.login()
+        run = wandb.init(project='11785_project', config=args)
+    
     # build model
     model = build_model(args)
     model.to(device)
@@ -239,6 +246,8 @@ def main(args):
     start_time = time.time()
     best_accu = 0
     for epoch in range(args.start_epoch, args.epochs):
+        # wandb
+        epoch_start_time = time.time()
         if args.distributed:
             sampler_train.set_epoch(epoch)
         train_stats = train_one_epoch(
@@ -252,6 +261,12 @@ def main(args):
                      **{f'validation_{k}': v for k, v in val_stats.items()},
                      'epoch': epoch,
                      'n_parameters': n_parameters}
+        # wandb
+        wandb_log = log_stats
+        wandb_log["epoch_time"] = (time.time() - epoch_start_time) / 60
+        wandb_log["total_time"] = (time.time() - start_time) / 60
+        if utils.get_rank() == 0:
+            run.log(wandb_log)
 
         if args.output_dir and utils.is_main_process():
             with (output_dir / "log.txt").open("a") as f:
@@ -279,6 +294,9 @@ def main(args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
+    # wandb
+    if utils.get_rank() == 0:
+        run.finish()
 
 
 if __name__ == '__main__':
