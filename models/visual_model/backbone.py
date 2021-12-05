@@ -92,7 +92,7 @@ class Backbone(BackboneBase):
             norm_layer=FrozenBatchNorm2d)
         # )
         checkpoint = torch.load('/root/paddlejob/workspace/code/TransVG/pretrained/resnet_pretrained/wide_resnet50_2-95faca4d.pth')
-        backbone.load_state_dict(checkpoint['state_dict'])
+        backbone.load_state_dict(checkpoint)
             # pretrained=is_main_process(), norm_layer=FrozenBatchNorm2d)
         assert name in ('resnet50', 'resnet101', 'wide_resnet50_2')
         num_channels = 2048
